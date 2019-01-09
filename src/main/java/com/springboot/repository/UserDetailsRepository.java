@@ -7,7 +7,7 @@ import com.springboot.model.UserDetails;
  * 
  * @author Jeet Khatri
  * @date 09-Jan-2019
- * @link https://github.com/JeetKhatri/SpringBoot-many-to-one-with-mysql.git
+ * @link https://github.com/JeetKhatri/Springboot-Authentication-Using-Spring-Security.git
  *
  */
 

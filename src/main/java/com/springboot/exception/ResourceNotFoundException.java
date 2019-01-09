@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /***
  * 
  * @author Jeet Khatri
- * @date 16-Oct-2018
- * @link https://github.com/JeetKhatri/SpringBoot-many-to-one-with-mysql.git
+ * @date 09-Jan-2019
+ * @link https://github.com/JeetKhatri/Springboot-Authentication-Using-Spring-Security.git
  *
  */
 
