@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,16 +35,19 @@ public class UserDetailsController {
 	private UserDetailsService userDetailsService;
 	
 	@GetMapping
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public List<UserDetails> listOfSubjects() {
 		return userDetailsService.getListOfUserDetails();
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public UserDetails addUserDetails(@Valid @RequestBody UserDetails userDetails) {
 		return userDetailsService.addUserDetails(userDetails);
 	}
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public UserDetails updateUserDetails(@Valid @RequestBody UserDetails userDetails, @PathVariable int id) {
 		return userDetailsService.updateUserDetails(userDetails, id);
 	}
@@ -55,11 +59,13 @@ public class UserDetailsController {
 	 * 
 	 */
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public UserDetails getUserDetails(@PathVariable(name="id") int id) {
 		return userDetailsService.getUserDetails(id);
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<?> deleteUserDetails(@PathVariable int id) {
 		return userDetailsService.deleteUserDetails(id);
 	}

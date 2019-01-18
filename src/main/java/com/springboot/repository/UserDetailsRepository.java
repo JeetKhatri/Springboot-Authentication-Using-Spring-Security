@@ -1,6 +1,9 @@
 package com.springboot.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import com.springboot.model.UserDetails;
 
 /***
@@ -13,6 +16,6 @@ import com.springboot.model.UserDetails;
 
 public interface UserDetailsRepository extends JpaRepository<UserDetails, Integer>{
 
-	
+	UserDetails findByName( String userName);
 }
 
