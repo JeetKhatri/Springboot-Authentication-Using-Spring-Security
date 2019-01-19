@@ -1,8 +1,10 @@
 package com.springboot.controller;
 
-import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /***
  * 
@@ -12,15 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 
-@RestController
+@Controller
 public class IndexController {
-
 	
 	@RequestMapping("/")
-	public String welcome() {
-		return "welcome to the app";
+	public String welcome(Model model) {
+		model.addAttribute("message","welcome to the app...");
+		return "welcome";
 	}
-
-	
-	
 }
