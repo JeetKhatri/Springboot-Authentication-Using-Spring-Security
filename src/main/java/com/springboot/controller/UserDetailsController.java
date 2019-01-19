@@ -7,6 +7,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +29,7 @@ import com.springboot.service.UserDetailsService;
  *
  */
 
-@RestController
+@Controller
 @RequestMapping("/users")
 public class UserDetailsController {
 	
@@ -36,8 +38,9 @@ public class UserDetailsController {
 	
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-	public List<UserDetails> listOfSubjects() {
-		return userDetailsService.getListOfUserDetails();
+	public String listOfUserDetails(Model model) {
+		model.addAttribute("userDetails",userDetailsService.getListOfUserDetails());
+		return "userList";
 	}
 	
 	@PostMapping
