@@ -25,7 +25,7 @@ import com.springboot.repository.UserDetailsRepository;
  */
 
 @Service
-public class UserDetailsService  implements org.springframework.security.core.userdetails.UserDetailsService{
+public class UserDetailsService {
 
 	@Autowired
 	private UserDetailsRepository userDetailsRepository;
@@ -59,25 +59,5 @@ public class UserDetailsService  implements org.springframework.security.core.us
 		UserDetails userDetails = userDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserDetails", "id", id));
 		userDetailsRepository.deleteById(userDetails.getId());
 		return ResponseEntity.ok().build();
-	}
-
-	@Override
-	public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException {
-		UserDetails user = userDetailsRepository.findByName(username);
-		if(user == null) {
-			throw new UsernameNotFoundException("User name "+username+" not found");
-		}
-		return new org.springframework.security.core.userdetails.User(user.getName(), "{noop}"+user.getPassword(),getGrantedAuthorities(user));
-	}
-
-	private Collection<GrantedAuthority> getGrantedAuthorities(UserDetails user) {
-		Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		if(user.getRoles().getName().equals("admin")) {
-			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		}else {
-			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		}
-		return grantedAuthorities;
 	}
 }

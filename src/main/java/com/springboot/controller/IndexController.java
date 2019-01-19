@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-public class IndexController implements ErrorController {
+public class IndexController {
 
 	
 	@RequestMapping("/")
@@ -21,10 +21,6 @@ public class IndexController implements ErrorController {
 		return "welcome to the app";
 	}
 
-	@Override
-	@RequestMapping("/error")
-	public String getErrorPath() {
-		return "No API found";
-	}
+	
 	
 }
