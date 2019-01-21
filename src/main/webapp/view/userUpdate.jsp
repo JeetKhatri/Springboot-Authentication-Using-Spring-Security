@@ -11,18 +11,20 @@
 </head>
 <body>
 <form:form mathod="post" action="${path}/users" modelAttribute="userForm">
+<form:hidden path="id" />
+<form:hidden path="password" />
 	<table>
 		<tr>
 			<td>Name : </td>
-			<td><form:input type="text" path="name" /></td>
+			<td><form:input path="name"  /></td>
 		</tr>
 		<tr>
 			<td>Number : </td>
-			<td><form:input type="text" path="number" /></td>
+			<td><form:input path="number" /></td>
 		</tr>
 		<tr>
-			<td>Password : </td>
-			<td><form:input type="password" path="password" /></td>
+			<td>Roles : </td>
+			<td><form:input path="roles" value="${userForm.roles.name}" disabled="true"/></td>
 		</tr>
 		<tr>
 			<td><form:button type="submit" value="save">Save</form:button></td>

@@ -52,20 +52,35 @@ public class UserDetailsController {
 	}
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String addUserDetails(@Valid @ModelAttribute UserDetails userDetails, Model model) {
+	public String addUpdateUserDetails(@Valid @ModelAttribute UserDetails userDetails, Model model) {
 		String name = userDetailsService.addUserDetails(userDetails);
 		if(name.isEmpty()) 
 			model.addAttribute("message","Fail to add User");
-		else 
-			model.addAttribute("message","User "+name+" added successfully.");
+		else {
+			String message="";
+			if(userDetails.getId()==0) {
+				message="added";
+			}else {
+				message="updated";
+			}
+			model.addAttribute("message","User "+name+" "+message+" successfully.");
+		}
 		return "welcome";
 	}
 	
-	@PutMapping("/{id}")
+	@GetMapping("edit/{id}")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	public String editForm(@PathVariable int id, Model model) {
+		model.addAttribute("userForm",userDetailsService.getUserDetails(id));
+		return "userUpdate";
+	}
+	
+/*	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public UserDetails updateUserDetails(@Valid @RequestBody UserDetails userDetails, @PathVariable int id) {
 		return userDetailsService.updateUserDetails(userDetails, id);
 	}
+	*/
 	
 	/*
 	 * Two way to get variable from url
@@ -79,10 +94,15 @@ public class UserDetailsController {
 		return userDetailsService.getUserDetails(id);
 	}
 	
-	@DeleteMapping("/{id}")
+	@GetMapping("delete/{id}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> deleteUserDetails(@PathVariable int id) {
-		return userDetailsService.deleteUserDetails(id);
+	public String deleteUserDetails(@PathVariable int id, Model model) {
+		if(userDetailsService.deleteUserDetails(id).getStatusCode().isError()) {
+			model.addAttribute("message","Fail to delete User");
+		}else {
+			model.addAttribute("message","User deleted successfully.");
+		}
+		return "welcome";
 	}
 	
 }
