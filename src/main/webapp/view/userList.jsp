@@ -25,5 +25,7 @@
 		</tr>
 	</c:forEach>
 </table>
+<br/>
+<a href="${path}">Home page</a>
 </body>
 </html>

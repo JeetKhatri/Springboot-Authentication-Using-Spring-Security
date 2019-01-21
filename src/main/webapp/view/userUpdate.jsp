@@ -31,5 +31,7 @@
 		</tr>
 	</table>
 </form:form>
+<br/>
+<a href="${path}">Home page</a>
 </body>
 </html>
