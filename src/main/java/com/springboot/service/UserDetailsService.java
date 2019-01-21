@@ -1,19 +1,15 @@
 package com.springboot.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.springboot.exception.ResourceNotFoundException;
+import com.springboot.model.Roles;
 import com.springboot.model.UserDetails;
+import com.springboot.repository.RolesRepository;
 import com.springboot.repository.UserDetailsRepository;
 
 /***
@@ -29,13 +25,19 @@ public class UserDetailsService {
 
 	@Autowired
 	private UserDetailsRepository userDetailsRepository;
+	@Autowired
+	private RolesRepository rolesRepository;
 	
 	public List<UserDetails> getListOfUserDetails() {
 		return userDetailsRepository.findAll();
 	}
 
-	public UserDetails addUserDetails(@Valid UserDetails userDetails) {
-		return userDetailsRepository.save(userDetails);
+	public String addUserDetails(@Valid UserDetails userDetails) {
+		Roles roles = rolesRepository.findByName("user");
+		if(roles != null) {
+			userDetails.setRoles(roles);
+		}
+		return userDetailsRepository.save(userDetails).getName();
 	}
 
 	public UserDetails updateUserDetails(@Valid UserDetails userDetails, int id) {

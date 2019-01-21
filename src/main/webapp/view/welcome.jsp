@@ -12,5 +12,6 @@
 ${message}
 <br><br><br>
 User List : <a href="${path}/users">user list</a>
+Add User : <a href="${path}/users/insert">Add User</a>
 </body>
 </html>

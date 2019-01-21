@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,10 +44,21 @@ public class UserDetailsController {
 		return "userList";
 	}
 	
+	@GetMapping("/insert")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	public String addForm(Model model) {
+		model.addAttribute("userForm",new UserDetails());
+		return "userInsert";
+	}
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public UserDetails addUserDetails(@Valid @RequestBody UserDetails userDetails) {
-		return userDetailsService.addUserDetails(userDetails);
+	public String addUserDetails(@Valid @ModelAttribute UserDetails userDetails, Model model) {
+		String name = userDetailsService.addUserDetails(userDetails);
+		if(name.isEmpty()) 
+			model.addAttribute("message","Fail to add User");
+		else 
+			model.addAttribute("message","User "+name+" added successfully.");
+		return "welcome";
 	}
 	
 	@PutMapping("/{id}")
