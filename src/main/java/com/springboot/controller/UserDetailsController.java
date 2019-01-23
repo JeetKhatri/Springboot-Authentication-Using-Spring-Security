@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.model.UserDetails;
-import com.springboot.service.UserDetailsService;
+import com.springboot.service.UserDetailsServiceImpl;
 
 /***
  * 
@@ -35,7 +35,7 @@ import com.springboot.service.UserDetailsService;
 public class UserDetailsController {
 	
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private UserDetailsServiceImpl userDetailsService;
 	
 	@GetMapping
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")

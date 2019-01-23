@@ -31,7 +31,7 @@
             <input name="username" type="text" class="form-control" placeholder="Username"
                    autofocus="true"/>
             <input name="password" type="password" class="form-control" placeholder="Password"/>
-            <input name="remember-me" id="remember-me" type="checkbox" /> Remember Me
+            <input name="remember-me" id="remember-me" type="checkbox" /> Remember Me<br/>
             <span>${errorMsg}</span>
 
             <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>

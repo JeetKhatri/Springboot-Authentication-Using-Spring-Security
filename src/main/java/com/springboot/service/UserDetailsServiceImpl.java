@@ -23,7 +23,7 @@ import com.springboot.repository.UserDetailsRepository;
  */
 
 @Service
-public class UserDetailsService {
+public class UserDetailsServiceImpl {
 
 	@Autowired
 	private UserDetailsRepository userDetailsRepository;
