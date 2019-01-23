@@ -75,12 +75,11 @@ public class UserDetailsController {
 		return "userUpdate";
 	}
 	
-/*	@PutMapping("/{id}")
+	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public UserDetails updateUserDetails(@Valid @RequestBody UserDetails userDetails, @PathVariable int id) {
 		return userDetailsService.updateUserDetails(userDetails, id);
 	}
-	*/
 	
 	/*
 	 * Two way to get variable from url

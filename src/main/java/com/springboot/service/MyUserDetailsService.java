@@ -26,7 +26,7 @@ public class MyUserDetailsService implements UserDetailsService {
 		if(user == null) {
 			throw new UsernameNotFoundException("User name "+username+" not found");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getName(), "{noop}"+user.getPassword(),getGrantedAuthorities(user));
+		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),getGrantedAuthorities(user));
 	}
 
 	private Collection<GrantedAuthority> getGrantedAuthorities(UserDetails user) {

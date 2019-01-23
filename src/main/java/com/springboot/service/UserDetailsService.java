@@ -1,9 +1,11 @@
 package com.springboot.service;
 
+import java.security.SecureRandom;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springboot.exception.ResourceNotFoundException;
@@ -27,6 +29,8 @@ public class UserDetailsService {
 	private UserDetailsRepository userDetailsRepository;
 	@Autowired
 	private RolesRepository rolesRepository;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public List<UserDetails> getListOfUserDetails() {
 		return userDetailsRepository.findAll();
@@ -37,6 +41,7 @@ public class UserDetailsService {
 		if(roles != null) {
 			userDetails.setRoles(roles);
 		}
+		userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
 		return userDetailsRepository.save(userDetails).getName();
 	}
 

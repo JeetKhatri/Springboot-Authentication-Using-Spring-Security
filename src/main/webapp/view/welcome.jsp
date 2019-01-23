@@ -9,9 +9,13 @@
 <title>welcome</title>
 </head>
 <body>
-${message}
-<br><br><br>
-User List : <a href="${path}/users">user list</a>
-Add User : <a href="${path}/users/insert">Add User</a>
+<c:if test="${pageContext.request.userPrincipal.name != null}">
+	<form action="${path}/logout" id="logoutForm" method="post" ></form>
+	${message} ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
+	<br><br><br>
+	User List : <a href="${path}/users">user list</a>
+	Add User : <a href="${path}/users/insert">Add User</a>
+</c:if>
+Hello
 </body>
 </html>
