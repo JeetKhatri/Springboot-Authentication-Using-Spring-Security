@@ -2,6 +2,8 @@ package com.springboot.service;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.UUID;
+
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -66,5 +68,18 @@ public class UserDetailsServiceImpl {
 		UserDetails userDetails = userDetailsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserDetails", "id", id));
 		userDetailsRepository.deleteById(userDetails.getId());
 		return ResponseEntity.ok().build();
+	}
+	
+	public String forgotPassword(String name) {
+		UserDetails userDetails = userDetailsRepository.findByName(name);
+		if(userDetails == null) {
+			return "Account not exist.";
+		}else {
+			String token = UUID.randomUUID().toString();
+			userDetails.setResetpasswordtoken(token);
+			userDetails.setExpiryDate(60*24);
+			userDetailsRepository.save(userDetails);
+			return "password sent to your email";
+		}
 	}
 }

@@ -1,5 +1,8 @@
 package com.springboot.model;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,6 +39,26 @@ public class UserDetails {
     @ManyToOne
     private Roles roles;
     
+    private String resetpasswordtoken;
+    
+    private Date resetpasswordexpirationDate;
+    
+	public String getResetpasswordtoken() {
+		return resetpasswordtoken;
+	}
+
+	public void setResetpasswordtoken(String resetpasswordtoken) {
+		this.resetpasswordtoken = resetpasswordtoken;
+	}
+
+	public Date getResetpasswordexpirationDate() {
+		return resetpasswordexpirationDate;
+	}
+
+	public void setResetpasswordexpirationDate(Date resetpasswordexpirationDate) {
+		this.resetpasswordexpirationDate = resetpasswordexpirationDate;
+	}
+
 	public Roles getRoles() {
 		return roles;
 	}
@@ -75,5 +98,14 @@ public class UserDetails {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public void setExpiryDate(int minutes){
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.MINUTE, minutes);
+        this.resetpasswordexpirationDate = now.getTime();
+    }
 
+    public boolean isExpired() {
+        return new Date().after(this.resetpasswordexpirationDate);
+    }
 }

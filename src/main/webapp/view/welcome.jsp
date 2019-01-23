@@ -22,6 +22,7 @@ Welcome to springboot
 <br/>
 <br/>
 <a href="${path}/login">Login</a><br/>
+<a href="${path}/forgot-password">Forgot Password</a><br/>
 <a href="${path}/signup">Signup</a>
 </c:if>
 </body>

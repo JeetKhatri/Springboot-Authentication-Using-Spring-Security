@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.model.UserDetails;
@@ -59,6 +60,12 @@ public class UserDetailsController {
 		else {
 			model.addAttribute("msg","User "+name+" added successfully.");
 		}
+		return "login";
+	}
+	
+	@PostMapping("/forgot-password")
+	public String forgotpassword(@RequestParam("name") String name, Model model) {
+		model.addAttribute("msg",""+userDetailsService.forgotPassword(name));
 		return "login";
 	}
 	

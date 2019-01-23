@@ -42,4 +42,9 @@ public class IndexController {
 		model.addAttribute("userForm",new UserDetails());
 		return "signup";
 	}
+	
+	@GetMapping("/forgot-password")
+	public String forgotpasswordForm(Model model) {
+		return "forgotpassword";
+	}
 }
