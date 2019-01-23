@@ -28,7 +28,7 @@
 
         <div class="form-group ${error != null ? 'has-error' : ''}">
             <span>${msg}</span>
-            <input name="username" type="text" class="form-control" placeholder="Username"
+            <input name="email" type="text" class="form-control" placeholder="Username"
                    autofocus="true"/>
             <input name="password" type="password" class="form-control" placeholder="Password"/>
             <input name="remember-me" id="remember-me" type="checkbox" /> Remember Me<br/>

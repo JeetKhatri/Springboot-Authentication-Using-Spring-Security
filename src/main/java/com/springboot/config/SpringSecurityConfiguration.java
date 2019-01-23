@@ -55,14 +55,25 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}*/
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/").permitAll()
-		.antMatchers("/signup").permitAll().antMatchers("/users/signup").permitAll()
-		.antMatchers("/forgot-password").permitAll().antMatchers("/users/forgot-password").permitAll()
-		.antMatchers("/users/validate-password-token").permitAll().antMatchers("/users/reset-password").permitAll()
-		.anyRequest().authenticated().and()
-		.formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll().and()
-		.logout().deleteCookies("remember-me").permitAll().and().
-		rememberMe().tokenValiditySeconds(120);
+		http.csrf().disable()
+			.authorizeRequests()
+			.antMatchers("/").permitAll()
+			.antMatchers("/signup").permitAll()
+			.antMatchers("/users/signup").permitAll()
+			.antMatchers("/forgot-password").permitAll()
+			.antMatchers("/users/forgot-password").permitAll()
+			.antMatchers("/users/validate-password-token").permitAll()
+			.antMatchers("/users/reset-password").permitAll()
+			.anyRequest().authenticated()
+		.and().formLogin()
+			.loginPage("/login")
+			.usernameParameter("email")
+            .passwordParameter("password")
+			.defaultSuccessUrl("/").permitAll()
+		.and().logout().
+			deleteCookies("remember-me").permitAll()
+		.and().rememberMe()
+			.tokenValiditySeconds(120);
 	}
 	
 	// for third way with roles - static username and password
