@@ -50,9 +50,20 @@ public class UserDetailsController {
 		model.addAttribute("userForm",new UserDetails());
 		return "userInsert";
 	}
-	@PostMapping
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	
+	@PostMapping("/signup")
 	public String addUpdateUserDetails(@Valid @ModelAttribute UserDetails userDetails, Model model) {
+		String name = userDetailsService.addUserDetails(userDetails);
+		if(name.isEmpty()) 
+			model.addAttribute("msg","Fail to add User");
+		else {
+			model.addAttribute("msg","User "+name+" added successfully.");
+		}
+		return "login";
+	}
+	
+	@PostMapping
+	public String AddGuestUserDetails(@Valid @ModelAttribute UserDetails userDetails, Model model) {
 		String name = userDetailsService.addUserDetails(userDetails);
 		if(name.isEmpty()) 
 			model.addAttribute("message","Fail to add User");
@@ -65,7 +76,7 @@ public class UserDetailsController {
 			}
 			model.addAttribute("message","User "+name+" "+message+" successfully.");
 		}
-		return "welcome";
+		return "login";
 	}
 	
 	@GetMapping("edit/{id}")
