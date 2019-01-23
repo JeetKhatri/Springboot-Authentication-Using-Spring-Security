@@ -1,14 +1,27 @@
 package com.springboot.service;
 
 import java.security.SecureRandom;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.springboot.exception.ResourceNotFoundException;
 import com.springboot.model.Roles;
@@ -76,10 +89,69 @@ public class UserDetailsServiceImpl {
 			return "Account not exist.";
 		}else {
 			String token = UUID.randomUUID().toString();
-			userDetails.setResetpasswordtoken(token);
+			userDetails.setResetPasswordToken(token);
 			userDetails.setExpiryDate(60*24);
 			userDetailsRepository.save(userDetails);
+			
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.port", "587");
+			   
+			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			      protected PasswordAuthentication getPasswordAuthentication() {
+			         return new PasswordAuthentication("jeet.khatri1@gmail.com", "*****");
+			      }
+			});
+			Message msg = new MimeMessage(session);
+			try {
+			   msg.setFrom(new InternetAddress("jeet.khatri1@gmail.com", false));
+			   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("jeet.khatri1@gmail.com"));
+			   msg.setSubject("Tutorials point email");
+			   msg.setSentDate(new Date());
+
+			   MimeBodyPart messageBodyPart = new MimeBodyPart();
+			   messageBodyPart.setContent("Tutorials point email1<br/><br/><br/><a href=\"http://localhost:6018/users/validate-password-token?resetpasswordtoken="+token+"\">Reset Password</a><br/>", "text/html");
+
+			   Multipart multipart = new MimeMultipart();
+			   multipart.addBodyPart(messageBodyPart);
+			  // MimeBodyPart attachPart = new MimeBodyPart();
+			   //attachPart.attachFile("/var/tmp/image19.png");
+			   //multipart.addBodyPart(attachPart);
+			   msg.setContent(multipart);
+			   Transport.send(msg); 
+			
+			} catch (Exception e) {
+					e.printStackTrace();
+			}
 			return "password sent to your email";
+		}
+	}
+
+	public boolean validatePasswordToken(String resetPasswordToken, Model model) {
+		UserDetails userDetails = userDetailsRepository.findByResetPasswordToken(resetPasswordToken);
+		if(userDetails != null && !userDetails.isExpired()) {
+			model.addAttribute("resetPasswordToken",resetPasswordToken);
+			return true;
+		}
+		return false;
+	}
+
+	public String resetPassword(String password, String confirmPassword, String resetPasswordToken) {
+		if(password.equals(confirmPassword)) {
+			UserDetails userDetails = userDetailsRepository.findByResetPasswordToken(resetPasswordToken);
+			if(userDetails != null && !userDetails.isExpired()) {
+				userDetails.setPassword(bCryptPasswordEncoder.encode(password));
+				userDetails.setResetPasswordToken(null);
+				userDetails.setResetPasswordExpirationDate(null);
+				userDetailsRepository.save(userDetails);
+				return "password updated.";
+			}else {
+				return "Invalid token";
+			}
+		}else {
+			return "password and confirm password are not same";
 		}
 	}
 }

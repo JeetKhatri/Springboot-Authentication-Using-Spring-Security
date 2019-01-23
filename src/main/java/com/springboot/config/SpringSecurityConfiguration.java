@@ -58,6 +58,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().authorizeRequests().antMatchers("/").permitAll()
 		.antMatchers("/signup").permitAll().antMatchers("/users/signup").permitAll()
 		.antMatchers("/forgot-password").permitAll().antMatchers("/users/forgot-password").permitAll()
+		.antMatchers("/users/validate-password-token").permitAll().antMatchers("/users/reset-password").permitAll()
 		.anyRequest().authenticated().and()
 		.formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll().and()
 		.logout().deleteCookies("remember-me").permitAll().and().

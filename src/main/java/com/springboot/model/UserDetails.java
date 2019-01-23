@@ -39,24 +39,24 @@ public class UserDetails {
     @ManyToOne
     private Roles roles;
     
-    private String resetpasswordtoken;
+    private String resetPasswordToken;
     
-    private Date resetpasswordexpirationDate;
+    private Date resetPasswordExpirationDate;
     
-	public String getResetpasswordtoken() {
-		return resetpasswordtoken;
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
 	}
 
-	public void setResetpasswordtoken(String resetpasswordtoken) {
-		this.resetpasswordtoken = resetpasswordtoken;
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
-	public Date getResetpasswordexpirationDate() {
-		return resetpasswordexpirationDate;
+	public Date getResetPasswordExpirationDate() {
+		return resetPasswordExpirationDate;
 	}
 
-	public void setResetpasswordexpirationDate(Date resetpasswordexpirationDate) {
-		this.resetpasswordexpirationDate = resetpasswordexpirationDate;
+	public void setResetPasswordExpirationDate(Date resetPasswordExpirationDate) {
+		this.resetPasswordExpirationDate = resetPasswordExpirationDate;
 	}
 
 	public Roles getRoles() {
@@ -102,10 +102,10 @@ public class UserDetails {
 	public void setExpiryDate(int minutes){
         Calendar now = Calendar.getInstance();
         now.add(Calendar.MINUTE, minutes);
-        this.resetpasswordexpirationDate = now.getTime();
+        this.resetPasswordExpirationDate = now.getTime();
     }
 
     public boolean isExpired() {
-        return new Date().after(this.resetpasswordexpirationDate);
+        return new Date().after(this.resetPasswordExpirationDate);
     }
 }

@@ -69,6 +69,22 @@ public class UserDetailsController {
 		return "login";
 	}
 	
+	@GetMapping("/validate-password-token")
+	public String validatePasswordToken(@RequestParam("resetpasswordtoken") String resetpasswordtoken, Model model) {
+		if(userDetailsService.validatePasswordToken(resetpasswordtoken, model)) {
+			return "resetPassword";
+		}else {
+			model.addAttribute("msg","invalid password reset link.");
+			return "login";
+		}
+	}
+	
+	@PostMapping("/reset-password")
+	public String resetpassword(@RequestParam("password") String password,@RequestParam("confirmPassword") String confirmPassword,@RequestParam("resetPasswordToken") String resetPasswordToken, Model model) {
+		model.addAttribute("msg", userDetailsService.resetPassword(password,confirmPassword,resetPasswordToken));
+		return "login";
+	}
+	
 	@PostMapping
 	public String AddGuestUserDetails(@Valid @ModelAttribute UserDetails userDetails, Model model) {
 		String name = userDetailsService.addUserDetails(userDetails);

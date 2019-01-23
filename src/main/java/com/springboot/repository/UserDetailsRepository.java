@@ -16,6 +16,7 @@ import com.springboot.model.UserDetails;
 
 public interface UserDetailsRepository extends JpaRepository<UserDetails, Integer>{
 
-	UserDetails findByName( String userName);
+	UserDetails findByName(String userName);
+	UserDetails findByResetPasswordToken(String resetPasswordToken);
 }
 
