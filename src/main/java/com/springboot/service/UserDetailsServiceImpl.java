@@ -1,6 +1,7 @@
 package com.springboot.service;
 
 import java.security.SecureRandom;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -19,6 +20,12 @@ import javax.mail.internet.MimeMultipart;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -152,6 +159,35 @@ public class UserDetailsServiceImpl {
 			}
 		}else {
 			return "password and confirm password are not same";
+		}
+	}
+
+	public String updatePassword(String existingPassword, String newPassword, String confirmPassword, Model model) {
+		if(newPassword.equals(confirmPassword)) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if(auth!=null) { 
+				UserDetails userDetails = userDetailsRepository.findByName(auth.getName());
+				if(userDetails != null) {
+					if(BCrypt.checkpw(existingPassword, userDetails.getPassword())) {
+						userDetails.setPassword(bCryptPasswordEncoder.encode(newPassword));
+						userDetailsRepository.save(userDetails);
+						model.addAttribute("message", "Password updated. ");
+						return "welcome";
+					}else {
+						model.addAttribute("message","Entered existing password are not same as system password");
+						return "updatePassword";
+					}
+				} else {
+					model.addAttribute("message","User name "+auth.getName()+" not found");
+					return "login";
+				}
+			}else{
+				model.addAttribute("message","you are logged out. please login again.");
+				return "login";
+			}
+		}else {
+			model.addAttribute("message", "password and confirm password are not same ");
+			return "updatePassword";
 		}
 	}
 }

@@ -85,6 +85,17 @@ public class UserDetailsController {
 		return "login";
 	}
 	
+	@GetMapping("/update-password")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	public String updatePasswordForm(Model model) {
+		return "updatePassword";
+	}
+	@PostMapping("/update-password")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	public String updatePassword(Model model, @RequestParam("existingPassword") String existingPassword,@RequestParam("confirmPassword") String confirmPassword,@RequestParam("newPassword") String newPassword) {
+		return userDetailsService.updatePassword(existingPassword,newPassword,confirmPassword,model);
+	}
+	
 	@PostMapping
 	public String AddGuestUserDetails(@Valid @ModelAttribute UserDetails userDetails, Model model) {
 		String name = userDetailsService.addUserDetails(userDetails);

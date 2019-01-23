@@ -11,9 +11,9 @@
 <body>
 <c:if test="${pageContext.request.userPrincipal.name != null}">
 	<form action="${path}/logout" id="logoutForm" method="post" ></form>
-	${message} ${pageContext.request.userPrincipal.name} | <a href="javascript:void(0);" onclick="document.forms['logoutForm'].submit()">Logout</a>
+	${message} ${loggedInUserName}. <br/><br/>You are logged in as ${pageContext.request.userPrincipal.name}. | <a href="javascript:void(0);" onclick="document.forms['logoutForm'].submit()">Logout</a> | <a href="${path}/users/update-password" >Update Password</a>
 	<br><br><br>
-	User List : <a href="${path}/users">user list</a>
+	User List : <a href="${path}/users">user list</a><br/>
 	Add User : <a href="${path}/users/insert">Add User</a>
 </c:if>
 

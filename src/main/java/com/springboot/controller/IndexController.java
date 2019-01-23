@@ -1,6 +1,9 @@
 package com.springboot.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springboot.model.UserDetails;
+import com.springboot.service.UserDetailsServiceImpl;
 
 /***
  * 
@@ -22,9 +26,17 @@ import com.springboot.model.UserDetails;
 @Controller
 public class IndexController {
 	
+	@Autowired
+	private UserDetailsServiceImpl userDetailsService;
+	
 	@RequestMapping("/")
 	public String welcome(Model model) {
-		model.addAttribute("message","welcome to the app...");
+		model.addAttribute("message","welcome to the app ");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userName="";
+		if(auth!=null) 
+			userName = auth.getName();
+		model.addAttribute("loggedInUserName",userName);
 		return "welcome";
 	}
 	
