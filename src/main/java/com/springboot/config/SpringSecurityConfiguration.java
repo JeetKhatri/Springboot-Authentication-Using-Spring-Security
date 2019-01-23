@@ -35,7 +35,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/").permitAll()
 		.anyRequest().authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/").permitAll()
-		.and().logout().permitAll();
+		.and().logout().deleteCookies("remember-me").permitAll().and().rememberMe().tokenValiditySeconds(120);
 		http.csrf().disable();
 	}
 	

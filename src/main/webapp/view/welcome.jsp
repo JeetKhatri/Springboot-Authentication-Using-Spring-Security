@@ -11,7 +11,7 @@
 <body>
 <c:if test="${pageContext.request.userPrincipal.name != null}">
 	<form action="${path}/logout" id="logoutForm" method="post" ></form>
-	${message} ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
+	${message} ${pageContext.request.userPrincipal.name} | <a href="javascript:void(0);" onclick="document.forms['logoutForm'].submit()">Logout</a>
 	<br><br><br>
 	User List : <a href="${path}/users">user list</a>
 	Add User : <a href="${path}/users/insert">Add User</a>
