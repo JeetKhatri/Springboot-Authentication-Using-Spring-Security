@@ -16,6 +16,13 @@
 	User List : <a href="${path}/users">user list</a>
 	Add User : <a href="${path}/users/insert">Add User</a>
 </c:if>
-Hello
+
+<c:if test="${pageContext.request.userPrincipal.name == null}">
+Welcome to springboot
+<br/>
+<br/>
+<a href="${path}/login">Login</a><br/>
+<a href="${path}/signup">Signup</a>
+</c:if>
 </body>
 </html>
