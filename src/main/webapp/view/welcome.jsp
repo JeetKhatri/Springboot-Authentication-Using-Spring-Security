@@ -13,8 +13,13 @@
 	<form action="${path}/logout" id="logoutForm" method="post" ></form>
 	${message} ${loggedInUserName}. <br/><br/>You are logged in as ${pageContext.request.userPrincipal.name}. | <a href="javascript:void(0);" onclick="document.forms['logoutForm'].submit()">Logout</a> | <a href="${path}/users/update-password" >Update Password</a>
 	<br><br><br>
-	User List : <a href="${path}/users">user list</a><br/>
-	Add User : <a href="${path}/users/insert">Add User</a>
+	<c:if test="${pageContext.request.userPrincipal.name != 'user'}">
+		User List : <a href="${path}/users">user list</a><br/>	
+	</c:if>
+	Add User : <a href="${path}/users/insert">Add User</a><br/>
+	<c:if test="${pageContext.request.userPrincipal.name == 'superadmin'}">
+		Admin List : <a href="${path}/admin">admin list</a><br/>	
+	</c:if>
 </c:if>
 
 <c:if test="${pageContext.request.userPrincipal.name == null}">

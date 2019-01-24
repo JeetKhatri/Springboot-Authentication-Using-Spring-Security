@@ -54,8 +54,11 @@ public class UserDetailsServiceImpl {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	public List<UserDetails> getListOfAdminDetails() {
+		return userDetailsRepository.findByRolesName("admin");
+	}
 	public List<UserDetails> getListOfUserDetails() {
-		return userDetailsRepository.findAll();
+		return userDetailsRepository.findByRolesName("user");
 	}
 
 	public String addUserDetails(@Valid UserDetails userDetails) {

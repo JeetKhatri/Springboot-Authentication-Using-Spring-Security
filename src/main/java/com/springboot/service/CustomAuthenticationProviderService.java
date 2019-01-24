@@ -46,7 +46,9 @@ public class CustomAuthenticationProviderService implements AuthenticationProvid
 
 	private Collection<GrantedAuthority> getGrantedAuthorities(UserDetails user) {
 		Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		if(user.getRoles().getName().equals("admin")) {
+		if(user.getRoles().getName().equals("superadmin")) {
+			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_SUPERADMIN"));
+		}else if(user.getRoles().getName().equals("admin")) {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}else {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));

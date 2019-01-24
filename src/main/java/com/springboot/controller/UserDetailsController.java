@@ -39,14 +39,14 @@ public class UserDetailsController {
 	private UserDetailsServiceImpl userDetailsService;
 	
 	@GetMapping
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPERADMIN')")
 	public String listOfUserDetails(Model model) {
 		model.addAttribute("userDetails",userDetailsService.getListOfUserDetails());
 		return "userList";
 	}
 	
 	@GetMapping("/insert")
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPERADMIN')")
 	public String addForm(Model model) {
 		model.addAttribute("userForm",new UserDetails());
 		return "userInsert";
@@ -86,12 +86,12 @@ public class UserDetailsController {
 	}
 	
 	@GetMapping("/update-password")
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPERADMIN')")
 	public String updatePasswordForm(Model model) {
 		return "updatePassword";
 	}
 	@PostMapping("/update-password")
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPERADMIN')")
 	public String updatePassword(Model model, @RequestParam("existingPassword") String existingPassword,@RequestParam("confirmPassword") String confirmPassword,@RequestParam("newPassword") String newPassword) {
 		return userDetailsService.updatePassword(existingPassword,newPassword,confirmPassword,model);
 	}
@@ -114,14 +114,14 @@ public class UserDetailsController {
 	}
 	
 	@GetMapping("edit/{id}")
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPERADMIN')")
 	public String editForm(@PathVariable int id, Model model) {
 		model.addAttribute("userForm",userDetailsService.getUserDetails(id));
 		return "userUpdate";
 	}
 	
 	@PutMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPERADMIN')")
 	public UserDetails updateUserDetails(@Valid @RequestBody UserDetails userDetails, @PathVariable int id) {
 		return userDetailsService.updateUserDetails(userDetails, id);
 	}
@@ -133,13 +133,13 @@ public class UserDetailsController {
 	 * 
 	 */
 	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPERADMIN')")
 	public UserDetails getUserDetails(@PathVariable(name="id") int id) {
 		return userDetailsService.getUserDetails(id);
 	}
 	
 	@GetMapping("delete/{id}")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPERADMIN')")
 	public String deleteUserDetails(@PathVariable int id, Model model) {
 		if(userDetailsService.deleteUserDetails(id).getStatusCode().isError()) {
 			model.addAttribute("message","Fail to delete User");

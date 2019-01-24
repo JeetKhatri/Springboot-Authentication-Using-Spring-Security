@@ -1,5 +1,8 @@
 package com.springboot.repository;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,5 +21,6 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, Intege
 
 	UserDetails findByName(String userName);
 	UserDetails findByResetPasswordToken(String resetPasswordToken);
+	List<UserDetails> findByRolesName(String roleName);
 }
 

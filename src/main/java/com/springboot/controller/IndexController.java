@@ -29,6 +29,13 @@ public class IndexController {
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
 	
+	@GetMapping("/admin")
+	@PreAuthorize("hasRole('ROLE_SUPERADMIN')")
+	public String listOfAdminDetails(Model model) {
+		model.addAttribute("userDetails",userDetailsService.getListOfAdminDetails());
+		return "adminList";
+	}
+	
 	@RequestMapping("/")
 	public String welcome(Model model) {
 		model.addAttribute("message","welcome to the app ");
